@@ -1,0 +1,15 @@
+{
+  "name": "ls-tool",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fridolph <249121486@qq.com> (http://github.com/fridolph)",
+  "license": "MIT",
+  "devDependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^2.19.0"
+  }
+}
