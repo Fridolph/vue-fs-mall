@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Electron App</title>
+</head>
+<body>
+  <h1>Electron App</h1>
+
+  <button id="btn">按钮</button>
+
+  <button id="btn2">按钮2 通信</button>
+  <span id="text"></span>
+
+  <script>
+  // 在渲染进程中，不能直接获取到主进程中的数据
+  // 在渲染进程中，可以使用 electron 对象
+  // 有的属性在主进程中使用， 而有的在渲染进程中用
+  const {remote, ipcRenderer} = require('electron')
+  console.log('remote: ', remote)
+  // 如果需要访问主进程中的数据，可通过 渲染进程 electron对象下的 remote子对象
+  // remote下有一个 getGlobal 方法，可获取主进程中的全局数据
+  // console.log(remote.getGlobal('username'))
+
+  // 法二 IPC Electron提供API
+  // IPC - 进程间通信
+  // ipcRenderer.send(channel[, arg1][, arg2][, ...])
+  // ipcMain.on(channel, listener)
+  // listener(e, ...data) 监听
+  // e.sender.send() 回复
+
+  const btn = document.querySelector('#btn')
+  const text = document.querySelector('#text')
+  btn.addEventListener('click', function() {
+    ipcRenderer.send('getData', 'username')
+  })
+
+  ipcRenderer.on('sendData', function(e, data) {
+    console.log(data)
+    text.innerHTML = data
+  })
+
+  ipcRenderer.on('hello', (e, ...data) => {
+    alert(data[0])
+  })
+  </script>
+
+  <script>
+  const btn2 = document.querySelector('#btn2')
+  btn2.addEventListener('click', e => {
+    console.log('page App LS', localStorage)
+  })
+  </script>
+</body>
+</html>

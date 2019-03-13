@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Electron App</title>
+</head>
+<body>
+<h1>页面2</h1>
+
+<button id="btn2">通信按钮</button>
+<button id="btn3">add LS</button>
+<script>
+  const btn2 = document.querySelector('#btn2')
+  const btn3 = document.querySelector('#btn3')
+  btn2.addEventListener('click', e => {
+    console.log('page2 LS', localStorage)
+  })
+
+  btn3.addEventListener('click', e => {
+    localStorage.setItem('name', 'fridolph')
+  })
+</script>
+</body>
+</html>
