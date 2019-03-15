@@ -4,11 +4,34 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <!-- <link rel="stylesheet" href="./style.css"> -->
-    <title>koa-demo</title>
+    <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico"> -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>{{ metaTitle }}</title>
   </head>
   <body>
-    <h1>index 首页</h1>
+    <h1>{{ title }}</h1>
+    <!-- <hr /> -->
+    <a href="/add">添加</a>
+    <ul>
+      {% for task in tasks %}
+        {% if (task.done) %}
+          {% set isDoneCls = 'done' %}
+          {% set isDone = '已完成' %}
+          <li class="{{isDoneCls}}">
+            <input type="checkbox" checked>
+            [{{isDone}}] - {{task.title}}
+            <button>x</button>
+          </li>
+        {% else %}
+          {% set isDoneCls = '' %}
+          {% set isDone = '未完成' %}
+          <li class="{{isDoneCls}}">
+            <input type="checkbox">
+            [{{isDone}}] - {{task.title}}
+            <button>x</button>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
   </body>
 </html>

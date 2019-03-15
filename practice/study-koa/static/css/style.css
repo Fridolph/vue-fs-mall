@@ -1,0 +1,27 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+h1 {
+  color: blue;
+}
+
+ul {
+  padding: 10px;
+}
+
+ul li {
+  line-height: 24px;
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+.done {
+  text-decoration: line-through;
+  color: #999;
+}
