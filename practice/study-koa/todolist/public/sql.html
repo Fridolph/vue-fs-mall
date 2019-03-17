@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Koa2 MySQL</title>
+  <style>
+    .done span{
+      text-decoration: line-through;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>TodoList</h1>
+    <hr>
+    <input type="text" v-model="inputText"><button @click="addTodo">add</button>
+    <ul>
+      <li v-for="todo in todos" :key="todo._id" :class="todo.done ? 'done' : ''">
+        <span>#{{todo._id}}</span>
+        <span>- {{todo.title}}</span>
+        <button>x</button>
+      </li>
+    </ul>
+    <nav>
+      <a href="javascript:;" @click="getData(1)">1</a>
+      <a href="javascript:;" @click="getData(2)">2</a>
+      <a href="javascript:;" @click="getData(3)">3</a>
+      <a href="javascript:;" @click="getData(4)">4</a>
+      <a href="javascript:;" @click="getData(5)">5</a>
+    </nav>
+  </div>
+  <script src="/js/vue.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        inputText: '',
+        todos: [],
+        limit: 10,
+        curPage: 1
+      },
+      created() {
+        this.getData()
+      },
+      methods: {
+        getData(page = 1, limit = 5) {
+          fetch(`/todos?page=${page}&limit=${limit}`).then(r => r.json()).then(res => {
+            if (res.code == 0) {
+              this.todos = res.data.todos
+            }
+          })
+        },
+        addTodo() {
+          if (this.inputText != '') {
+            fetch('/add', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ title: this.inputText })
+            }).then(r => r.json()).then(res => {
+              if (res.code == 0) {
+                this.inputText = ''
+                this.getData()
+              }
+            })
+          }
+        }
+      },
+    })
+  </script>
+</body>
+</html>
