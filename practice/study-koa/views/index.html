@@ -12,26 +12,31 @@
     <h1>{{ title }}</h1>
     <!-- <hr /> -->
     <a href="/add">添加</a>
-    <ul>
+    <ul class="list">
       {% for task in tasks %}
         {% if (task.done) %}
           {% set isDoneCls = 'done' %}
           {% set isDone = '已完成' %}
-          <li class="{{isDoneCls}}">
-            <input type="checkbox" checked>
+          <li class="list-item {{isDoneCls}}">
+            <input type="checkbox" checked onclick="change({{task.id}})">
             [{{isDone}}] - {{task.title}}
-            <button>x</button>
+            <a href="/remove/{{task.id}}">x</a>
           </li>
         {% else %}
           {% set isDoneCls = '' %}
           {% set isDone = '未完成' %}
-          <li class="{{isDoneCls}}">
-            <input type="checkbox">
+          <li class="list-item {{isDoneCls}}">
+            <input type="checkbox" onclick="change({{task.id}})">
             [{{isDone}}] - {{task.title}}
-            <button>x</button>
+            <a href="/remove/{{task.id}}">x</a>
           </li>
         {% endif %}
       {% endfor %}
     </ul>
+    <script>
+      function change(id) {
+        window.location.href = `/change/${id}`
+      }
+    </script>
   </body>
 </html>

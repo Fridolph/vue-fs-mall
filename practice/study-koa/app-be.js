@@ -7,7 +7,7 @@ const bodyParser = require('koa-bodyparser')
 
 const app = new Koa()
 
-
+let id = 3
 // 当前数据是存储在服务器运行的内存中的
 let datas = {
   metaTitle: 'Home - TodoList',
@@ -24,7 +24,7 @@ let datas = {
       done: false,
     },
     {
-      id: 1,
+      id: 3,
       title: '学习TypeScript',
       done: false,
     }
@@ -58,6 +58,7 @@ app.use(bodyParser())
 const router = new KoaRouter()
 // 首页，用于展示任务清单
 router.get('/', async ctx => {
+  // console.log('datas', datas.tasks)
   await ctx.render('index.html', datas)
 })
 // 添加新的任务 页面
@@ -75,11 +76,45 @@ router.get('/add', async ctx => {
 // })
 router.post('/add', async ctx => {
   let {title} = ctx.request.body
-  ctx.body = `POST接收提交的新任务 \ntitle: ${title}`
+  // ctx.body = `POST接收提交的新任务 \ntitle: ${title}`
+
+  if (!title) {
+    ctx.body = await ctx.render('message', {
+      metaTitle: 'Home - TodoList',
+      title: 'TodoList',
+      msg: '请输入任务标题',
+      href: 'javascript:history.back()'
+    })
+  } else {
+    datas.tasks.push({
+      id: ++id,
+      title,
+      done: false
+    })
+
+    await ctx.redirect('/')
+  }
+})
+// 改变任务状态
+router.get('/change/:id', async ctx => {
+  let id = ctx.params.id
+  // console.log('/change/id: ', id)
+  await datas.tasks.forEach(task => {
+    if (task.id === id) {
+      task.done = !task.done
+    }
+  })
+  ctx.body = `change id -> ${id}`
+  ctx.response.redirect('/')
 })
 // 删除任务
-router.get('/remove/:id', ctx => {
-  ctx.body = `/remove/${ctx.params.id}`
+router.get('/remove/:id', async ctx => {
+  let id = ctx.params.id
+  datas.tasks = datas.tasks.filter(item => item.id !== id)
+  // ctx.body = `/remove/${ctx.params.id}`
+  await ctx.render('remove.html', {
+    id
+  })
 })
 
 app.use(router.routes())
