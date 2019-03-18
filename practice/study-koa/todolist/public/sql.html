@@ -10,6 +10,12 @@
       text-decoration: line-through;
       color: #999;
     }
+    .filter a {
+      color: #999;
+    }
+    .filter .selected {
+      color: blue;
+    }
   </style>
 </head>
 <body>
@@ -19,17 +25,23 @@
     <input type="text" v-model="inputText"><button @click="addTodo">add</button>
     <ul>
       <li v-for="todo in todos" :key="todo._id" :class="todo.done ? 'done' : ''">
-        <span>#{{todo._id}}</span>
-        <span>- {{todo.title}}</span>
-        <button>x</button>
+        <input type="checkbox" v-model="todo.done" @change="toggleTodo(todo._id, todo.done)">
+        <span>{{todo.title}}</span>
+        <button @click="removeTodo(todo._id)">x</button>
       </li>
     </ul>
+    <nav class="filter">
+      <a :class="filter == 'all' ? 'selected' : ''" href="javascript:;" @click="filterTodos('all')">ALL</a>,
+      <a :class="filter == 'completed' ? 'selected' : ''" href="javascript:;" @click="filterTodos('completed')">Completed</a>,
+      <a :class="filter == 'todo' ? 'selected' : ''" href="javascript:;" @click="filterTodos('todo')">Todo</a>
+      <span>共 {{total}} 条</span>
+    </nav>
     <nav>
-      <a href="javascript:;" @click="getData(1)">1</a>
-      <a href="javascript:;" @click="getData(2)">2</a>
-      <a href="javascript:;" @click="getData(3)">3</a>
-      <a href="javascript:;" @click="getData(4)">4</a>
-      <a href="javascript:;" @click="getData(5)">5</a>
+      <a href="javascript:;" @click="changePage(1)">1</a>
+      <a href="javascript:;" @click="changePage(2)">2</a>
+      <a href="javascript:;" @click="changePage(3)">3</a>
+      <a href="javascript:;" @click="changePage(4)">4</a>
+      <a href="javascript:;" @click="changePage(5)">5</a>
     </nav>
   </div>
   <script src="/js/vue.min.js"></script>
@@ -38,18 +50,29 @@
       el: '#app',
       data: {
         inputText: '',
+        filter: 'all',
         todos: [],
         limit: 10,
-        curPage: 1
+        curPage: 1,
+        total: 0,
       },
       created() {
         this.getData()
       },
+      watch: {
+        filter(newVal, val) {
+          this.getData()
+        },
+        curPage(newVal, val) {
+          this.getData()
+        }
+      },
       methods: {
-        getData(page = 1, limit = 5) {
-          fetch(`/todos?page=${page}&limit=${limit}`).then(r => r.json()).then(res => {
+        getData(limit = 5) {
+          fetch(`/todos?page=${this.curPage}&limit=${limit}&type=${this.filter}`).then(r => r.json()).then(res => {
             if (res.code == 0) {
               this.todos = res.data.todos
+              this.total = res.data.total
             }
           })
         },
@@ -68,6 +91,36 @@
               }
             })
           }
+        },
+        toggleTodo(id, done) {
+          done = done ? 1 : 0
+          console.log('toggleTodo', id, done)
+          fetch(`/toggle/${id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ done })
+          })
+            // .then(r => r.json()).then(res => {
+            // if (res.code == 0) {
+            //   console.log('修改成功', id)
+            // }
+        },
+        removeTodo(id) {
+          fetch(`/remove/${id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          this.getData()
+        },
+        filterTodos(type) {
+          this.filter = type
+        },
+        changePage(page) {
+          this.curPage = page
         }
       },
     })
