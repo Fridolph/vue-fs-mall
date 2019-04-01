@@ -4,15 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "npx tsc -w"
   },
   "author": "fridolph <249121486@qq.com> (http://github.com/fridolph)",
   "license": "MIT",
   "dependencies": {
-    "mysql2": "^1.6.5",
+    "dayjs": "^1.8.11",
+    "koa": "^2.7.0",
+    "koa-controllers": "^0.1.6",
+    "md5": "^2.2.1",
+    "mysql2": "^1.6.1",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^4.39.0"
   },
   "devDependencies": {
-    "sequelize-cli": "^4.1.1"
+    "@types/koa": "^2.0.48",
+    "@types/md5": "^2.1.33",
+    "@types/sequelize": "^4.27.46",
+    "nodemon": "^1.18.10",
+    "sequelize-cli": "^4.1.1",
+    "typescript": "^3.3.4000"
   }
 }
