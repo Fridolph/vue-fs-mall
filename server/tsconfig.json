@@ -9,12 +9,12 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "typeRoots": [
-      "app/@types",
+      "src/@types",
       "node_modules/@types"
     ]
   },
   "includes": [
-    "app/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",

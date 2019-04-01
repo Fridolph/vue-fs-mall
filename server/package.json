@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tsc": "npx tsc -w"
+    "tsc": "npx tsc -w",
+    "dev": "npx nodemon ./dist/app.js"
   },
   "author": "fridolph <249121486@qq.com> (http://github.com/fridolph)",
   "license": "MIT",

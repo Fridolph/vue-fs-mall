@@ -13,14 +13,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const koa_controllers_1 = require("koa-controllers");
-let Main = class Main {
+let Index = class Index {
     async index(ctx) {
-        ctx.body = 'hello Koa TS';
-    }
-    async indexPost(ctx) {
         ctx.body = {
             code: 0,
-            data: 'hello Post Index'
+            data: 'hello koa & typescript'
         };
     }
 };
@@ -30,16 +27,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], Main.prototype, "index", null);
-__decorate([
-    koa_controllers_1.Post('/'),
-    __param(0, koa_controllers_1.Ctx),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], Main.prototype, "indexPost", null);
-Main = __decorate([
+], Index.prototype, "index", null);
+Index = __decorate([
     koa_controllers_1.Controller
-], Main);
-exports.Main = Main;
-//# sourceMappingURL=main.js.map
+], Index);
+exports.Index = Index;
+//# sourceMappingURL=index.js.map

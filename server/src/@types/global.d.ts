@@ -6,7 +6,7 @@ declare global {
     [index: number]: any
   }
 
-  interface IDb {
+  interface IDB {
     [key: string]: any
     [index: number]: any
   }
