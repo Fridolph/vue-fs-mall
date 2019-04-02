@@ -17,4 +17,5 @@ useControllers(app, __dirname + '/controllers/**/*.js', {
   }
 })
 
-app.listen(4000)
+app.listen(3002)
+console.log('server is running at port 3002...')

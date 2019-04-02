@@ -13,5 +13,6 @@ koa_controllers_1.useControllers(app, __dirname + '/controllers/**/*.js', {
         dest: './uploads'
     }
 });
-app.listen(4000);
+app.listen(3002);
+console.log('server is running at port 3002...');
 //# sourceMappingURL=app.js.map
