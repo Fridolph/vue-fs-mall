@@ -3,17 +3,15 @@
     <div class="layout">
       <Layout :style="{minHeight: '100vh'}">
 
-        <LayoutSider @collapse="collapse" :isCollapsed="isCollapsed" />
+        <LayoutSider />
 
-        <Layout :style="`transition:all 0.4s ease-in-out;margin-left: ${collapsedWidth}px`">
+        <Layout :style="`transition:all 0.2s ease;margin-left: ${collapsedWidth}px`">
 
-          <LayoutHeader :isCollapsed="isCollapsed" />
+          <LayoutHeader />
 
           <Content class="router-view-content">
             <Breadcrumb :style="{margin: '16px 0'}">
-              <BreadcrumbItem>Home</BreadcrumbItem>
-              <BreadcrumbItem>Components</BreadcrumbItem>
-              <BreadcrumbItem>Layout</BreadcrumbItem>
+              <BreadcrumbItem>{{ routeName }}</BreadcrumbItem>
             </Breadcrumb>
 
             <Card>
@@ -23,7 +21,6 @@
             </Card>
 
           </Content>
-
         </Layout>
       </Layout>
     </div>
@@ -31,49 +28,38 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import LayoutSider from '@/components/LayoutSider.vue'
-import LayoutHeader from '@/components/LayoutHeader.vue'
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { IState, IGetters } from '@/store';
+import LayoutSider from '@/components/LayoutSider.vue';
+import LayoutHeader from '@/components/LayoutHeader.vue';
 
 @Component({
   components: {
     LayoutSider,
-    LayoutHeader
-  }
+    LayoutHeader,
+  },
 })
 export default class App extends Vue {
-  isCollapsed: boolean = false
-
-  get menuitemClasses(): string[] {
-    return [
-      'menu-item',
-      this.isCollapsed ? 'collapsed-menu' : ''
-    ]
-  }
+  public isCollapsed: boolean = false;
 
   get collapsedWidth(): number {
-    return this.isCollapsed ? 78 : 200
+    const getters: IGetters = this.$store.getters;
+    return getters.collapsedWidth;
   }
 
-  collapse(status: boolean): void {
-    this.isCollapsed = status
+  get routeName(): string {
+    return this.$route.name;
   }
 }
 </script>
 
 <style lang="stylus">
+body
+  min-width 1000px
+  min-height 600px
+  overflow hidden
+
 .layout
-  .logo
-    color #fff
-    line-height 63px
-    text-align center
-
-  .fixed-sider
-    position: fixed
-    height: 100vh
-    left: 0
-    overflow: auto
-
   .router-view-content
     width: 100%
     margin-top: 64px
@@ -81,37 +67,4 @@ export default class App extends Vue {
     padding: 0 16px 16px
     overflow: hidden
     overflow-y: auto
-
-  .ivu-layout-header
-    background-color #515a6e
-
-  .layout-con
-    height: 100%
-    width: 100%
-
-  .menu-item span
-    display: inline-block
-    overflow: hidden
-    width: 69px
-    text-overflow: ellipsis
-    white-space: nowrap
-    vertical-align: bottom
-    transition: width .2s ease .2s
-
-  .menu-item i
-    transform: translateX(0px)
-    transition: font-size .2s ease, transform .2s ease
-    vertical-align: middle
-    font-size: 16px
-
-  .collapsed-menu span
-    width: 0px
-    transition: width .2s ease
-
-  .collapsed-menu i
-    transform: translateX(5px)
-    transition: font-size .2s ease .2s, transform .2s ease .2s
-    vertical-align: middle
-    font-size: 22px
-
 </style>

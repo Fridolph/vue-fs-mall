@@ -48,16 +48,18 @@ module.exports = {
   // webpack-dev-server 相关配置
   devServer: {
     open: true,
-    host: '0.0.0.0',
     port: 3001,
+    host: 'localhost',
     https: false,
     hot: true,
-    proxy: null,
     disableHostCheck: false,
-    // watchOptions: {
-    //   poll: true
-    // }
-    // 设置代理
-    // before: app => {}
+    progress: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3002',
+        pathRewrite: {'^/api' : ''},
+        changeOrigin: true
+      }
+    }
   }
 }

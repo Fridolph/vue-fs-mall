@@ -28,6 +28,9 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   function(response) {
+    if (response.status === 200) {
+      return response.data
+    }
     // Do something with response data
     return response;
   },
