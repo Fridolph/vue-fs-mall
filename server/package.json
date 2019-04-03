@@ -12,6 +12,7 @@
   "dependencies": {
     "dayjs": "^1.8.11",
     "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
     "koa-controllers": "^0.1.6",
     "md5": "^2.2.1",
     "mysql2": "^1.6.1",

@@ -1,5 +1,6 @@
 import * as Koa from 'koa'
 import { useControllers } from "koa-controllers"
+import * as KoaBodyParser from 'koa-bodyparser'
 import db from './models'
 
 let app = new Koa()
@@ -10,6 +11,8 @@ app.use( async (ctx: Koa.Context, next) => {
 
   await next()
 })
+
+app.use(KoaBodyParser())
 
 useControllers(app, __dirname + '/controllers/**/*.js', {
   multipart: {

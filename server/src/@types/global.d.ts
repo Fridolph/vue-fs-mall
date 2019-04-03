@@ -1,4 +1,5 @@
 import { Model } from 'sequelize'
+import * as Koa from 'koa'
 
 declare global {
   interface IConf {
@@ -15,5 +16,15 @@ declare global {
   interface IDB {
     [key: string]: any
     [index: number]: any
+  }
+}
+
+declare module 'koa'{
+  interface IBody {
+    [key: string]: any
+  }
+  interface Request {
+    body: IBody | null | undefined
+    rowBody: {} | null | undefined
   }
 }
