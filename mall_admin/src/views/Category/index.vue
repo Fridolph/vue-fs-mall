@@ -110,7 +110,7 @@ export default class Category extends Vue {
                 marginRight: '8px'
               },
               on: {
-                click: () => { this.appendModal(data.pid) }
+                click: () => { this.appendModal(data.id) }
               }
             }),
             h('Button', {
@@ -125,17 +125,20 @@ export default class Category extends Vue {
       ]);
   }
 
-  appendModal(pid: number) {
+  appendModal(id: number) {
+    console.log('id', id)
     this.$Modal.confirm({
       onOk: () => {
-        this.addCategory(pid)
+        this.addCategory(id)
       },
       render: h => {
         return h('div', [
-          h('h4', '添加分类'),
+          h('h4', '添加子分类'),
           h('Input', {
             props: {
-              placeholder: '请输入要添加的分类名'
+              placeholder: '请输入要添加的分类名',
+              autofucus: true,
+              value: this.currentCategoryName
             },
             on: {
               input: (val: string) => {
@@ -148,12 +151,12 @@ export default class Category extends Vue {
     })
   }
 
-  async addCategory(pid: number) {
+  async addCategory(id: number) {
     // pid: 0 顶级
     this.addCategoryLoading = true
     try {
       let res = await this.$axios.post('/api/admin/category/add', {
-        pid,
+        id,
         name: this.currentCategoryName
       })
       if (res.code === 0) {
@@ -161,6 +164,8 @@ export default class Category extends Vue {
         this.$Message.success(`添加分类: ${this.currentCategoryName}`)
         this.currentCategoryName = ''
         this.addCategoryLoading = false
+      } else {
+        this.$Message.error(res.msg)
       }
     } catch (e) {
       console.error(e)

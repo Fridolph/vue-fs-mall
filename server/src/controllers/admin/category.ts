@@ -23,8 +23,8 @@ export class AdminCategory {
 
   @Post('/admin/category/add')
   public async add(@Ctx ctx: Context) {
-    // console.log(ctx.request.body)
-    let {pid, name} = ctx.request.body
+    console.log(ctx.request.body)
+    let {id, name} = ctx.request.body
     if (name == '') {
       ctx.body = { code: 1, msg: '分类名称不能为空' }
       return
@@ -32,7 +32,7 @@ export class AdminCategory {
 
     let categoryModel: Model<any, any> = ctx.state.db['category']
     let category = await categoryModel.build({
-      pid,
+      pid: id,
       name
     })
     await category.save()
